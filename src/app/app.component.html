@@ -9,34 +9,37 @@
           >
             <strong>For:</strong> {{query}}
           </div>
-            <input type="text" class="form-control mt-2" >
+            <input type="text" class="form-control mt-2" 
+            [(ngModel)] = "query"
+            >
         </div>
       </div>
     </div>
   </div><!-- row -->
 
-  <div class="artist-list container">
+  <div class="artist-list container" 
+    *ngIf="query"
+  >
     <div class="row justify-content-center">
       <div class="col-12 col-sm-9 col-md-7 col-lg-5">
         <ul class=" list-group d-flex">
           <li class="list-group-item">
-  
-              <div class="media d-flex align-items-center" 
-              *ngFor = "let artist of artists" 
-              (click) = "showArtist(artist)">
-                <img class="rounded-circle mr-3"
-                  src="assets/images/artist-thumb.jpg"
-                  alt="Photo of ">
-                <div class="media-body">
-                  <h5 class="my-0 text-dark">{{artist.name}}</h5>
-                  <div class="text-secondary font-italic">{{artist.reknown}}</div>
-                </div><!-- media-body -->
-              </div><!-- media -->
+            <div class="media d-flex align-items-center" 
+              *ngFor = "let artist of (artists | searchArtist : query)" 
+              (click) = "showArtist(artist); query='' "
+              [style.backgroundColor] = "artist.highlight ? '#eee' : '#fff'"
+              >
+                <app-artist-item [artist] = "artist"></app-artist-item>
+            </div><!-- media -->
   
           </li>
         </ul>
       </div><!-- col-12 -->
     </div><!-- row -->
   </div><!-- col-container -->
+
+  <app-artist-details 
+  *ngIf = "currentArtist"
+  [artist] = "currentArtist"></app-artist-details>
 
 </div><!-- position -->
